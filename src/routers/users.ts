@@ -1,9 +1,12 @@
 import { Router } from 'express';
-/* import { pool } from '../config/mysql'; */
-
+import userController from '../controllers/user'
 const router = Router()
 
-router.get("/",async(req,res)=>{
- res.send("home users")
-})
+router 
+   .post("/",userController.createUser)
+   .get("/",userController.getUsers)
+   .get("/:id",userController.getOneUser)
+   .put("/:id",userController.updateUser)
+   .delete("/:id",userController.deleteUser)
+
 export {router}

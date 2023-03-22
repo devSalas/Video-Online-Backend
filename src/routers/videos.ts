@@ -1,14 +1,11 @@
 import { Router } from "express";
+import { getvideos, getvideosbyid, postvideos } from "../controllers/videos";
 
 const router = Router()
 
 
-router.get("/", (req, res) => {
-res.send("todos los videos")
-})
-router.get("/:id", (req, res) => {
-  res.send("todos los videos "+req.params.id)
-  })
-
+router.post('/',postvideos)
+router.get("/", getvideos)
+router.get("/:id",getvideosbyid )
 
 export {router}

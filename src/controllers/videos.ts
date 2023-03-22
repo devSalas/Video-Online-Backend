@@ -1,37 +1,43 @@
 import { Request, Response } from "express";
-import { Router } from "express";
 import videoModel from "../models/videos";
+import {v2 as cloudinary} from 'cloudinary';
+import DataURIParser from "datauri/parser";
+import path from 'path'
 
-const router = Router()
-
-router.get('/',async(req:Request,res:Response)=>{
+export const getvideos=async(req:Request,res:Response)=>{
 
     const videos= await videoModel.find()
 
     if (!videos) return res.send(403).send('No hay ningun video ')
 
     res.json({videos})
-})
+}
 
-router.post('/',async(req:Request,res:Response)=>{
-
+export const postvideos=async (req:Request,res:Response)=>{
+    
     const user = req.body
+    const {buffer,originalname} = req.file!
+    const parser = new DataURIParser()
 
-    if (!user) return res.status(403).send('Bad request')
+    if (!user) return res.status(400).send('Bad request')
 
     const video=await videoModel.findOne({_id:user.id})
 
-    if (video) return res.status(403).send('Bad request')
+    if (video) return res.status(400).send('Bad request')
 
+    const extName=path.extname(originalname)
     
+    const {content}= parser.format(extName,buffer) 
 
-    const newVideo= videoModel.create(...user)
+    const upload=await cloudinary.uploader.upload(content!,{folder:'videos'})
 
-    res.send('Video creado')
+    await videoModel.create({...user,url_video:upload.url})
 
-})
+    res.send('upload')
 
-router.get('/:id', async (req: Request, res: Response) => {
+}
+
+export const getvideosbyid =async(req: Request, res: Response)=> {
 
     const id = req.params
 
@@ -42,9 +48,8 @@ router.get('/:id', async (req: Request, res: Response) => {
     res.json({video})
 
 
-})
+}
 
 
 
 
-export { router }

@@ -5,7 +5,7 @@ const router = Router()
 
 
 router.post('/',postvideos)
-router.get("/", getvideos)
 router.get("/:id",getvideosbyid )
+router.get("/", getvideos)
 
 export {router}

@@ -8,20 +8,20 @@ export const getvideos=async(req:Request,res:Response)=>{
 
     const videos= await videoModel.find()
 
-    if (!videos) return res.send(403).send('No hay ningun video ')
+    if (!videos) return res.status(200).json({status:true,message:'No hay videos'})
 
-    res.json({videos})
+    res.json({status:true,videos})
 }
 
 export const postvideos=async (req:Request,res:Response)=>{
     
-    const user = req.body
+    const uploadVideo = req.body   
     const {buffer,originalname} = req.file!
     const parser = new DataURIParser()
 
-    if (!user) return res.status(400).send('Bad request')
+    if (!uploadVideo) return res.status(400).send('Bad request')
 
-    const video=await videoModel.findOne({_id:user.id})
+    const video=await videoModel.findOne({_id:uploadVideo.id})
 
     if (video) return res.status(400).send('Bad request')
 
@@ -31,9 +31,9 @@ export const postvideos=async (req:Request,res:Response)=>{
 
     const upload=await cloudinary.uploader.upload(content!,{folder:'videos'})
 
-    await videoModel.create({...user,url_video:upload.url})
+    await videoModel.create({...uploadVideo,url_video:upload.url})
 
-    res.send('upload')
+    res.json({status:true,message:'upload'})
 
 }
 
@@ -43,11 +43,9 @@ export const getvideosbyid =async(req: Request, res: Response)=> {
 
     const video = await videoModel.findOne({_id:id})
 
-    if (!video) return res.status(404).send('NOT FOUND')
+    if (!video) return res.status(403).send('NOT FOUND')
     
-    res.json({video})
-
-
+    res.json({status:true,video})
 }
 
 

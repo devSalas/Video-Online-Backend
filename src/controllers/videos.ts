@@ -39,7 +39,7 @@ export const postvideos=async (req:Request,res:Response)=>{
 
 export const getvideosbyid =async(req: Request, res: Response)=> {
 
-    const id = req.params
+    const {id} = req.params
 
     const video = await videoModel.findOne({_id:id})
 

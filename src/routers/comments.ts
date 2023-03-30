@@ -8,9 +8,10 @@ import {
 
 const router = Router();
 
-router.get("/", getComments);
-router.post("/", createComment);
-router.put("/", editComment);
-router.delete("/", removeComment);
+router
+  .get("/", getComments)
+  .post("/", createComment)
+  .put("/", editComment)
+  .delete("/", removeComment)
 
 export { router };

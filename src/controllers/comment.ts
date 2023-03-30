@@ -28,7 +28,7 @@ export const createComment = async (req: Request, res: Response) => {
   });
 
   //guardar el comentario
-  //console.log(newComentario);
+  console.log(newComentario);
   const respuesta = await newComentario.save();
 
   //retornar el nuevo comentario

@@ -16,6 +16,6 @@ app.use(multer({storage:multer.memoryStorage()}).single('video'))
 app.use(router)
 
 app.listen(PORT, () => {
-  console.log('listo el backend junior mmgv, y con typescript' + ' ' + PORT)
+  console.log(`running on http:/localhost:${PORT}`)
 })
 
